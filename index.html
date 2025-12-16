@@ -3,283 +3,507 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tisza Amour - University Dating</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Tisza Amour | Szeged University Dating</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         :root {
-            --primary: #8a1c1c; /* Szeged Paprika/Red Wine */
-            --secondary: #fdf6e3; /* Cream/Old Paper */
-            --accent: #d4af37; /* Gold */
-            --text: #2c2c2c;
+            /* A deeper, more romantic palette */
+            --primary-color: #A01D28; /* Deep Szeged Red */
+            --accent-color: #D4AF37; /* Gold */
+            --dark-bg: #1a0f14; /* Deep romantic night */
+            --glass-bg: rgba(255, 255, 255, 0.1); /* For Glassmorphism */
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-light: #f0e6e8;
         }
 
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Lato', sans-serif;
-            background-color: var(--secondary);
-            color: var(--text);
-            line-height: 1.6;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            overflow-x: hidden;
+            min-height: 100vh;
         }
 
         h1, h2, h3 {
             font-family: 'Playfair Display', serif;
         }
 
-        /* Navigation */
+        /* --- ANIMATED BACKGROUND SLIDER --- */
+        .bg-slider {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        .bg-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            animation: slideAnimation 24s infinite;
+        }
+
+        /* Images of Szeged/Romance */
+        .s1 { background-image: url('https://images.unsplash.com/photo-1564919024079-054463500a87?q=80&w=2070'); animation-delay: 0s; } /* Szeged Dom */
+        .s2 { background-image: url('https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=1974'); animation-delay: 8s; } /* Romantic Night */
+        .s3 { background-image: url('https://images.unsplash.com/photo-1606414156743-d23cb53673b5?q=80&w=2070'); animation-delay: 16s; } /* River vibe */
+
+        @keyframes slideAnimation {
+            0% { opacity: 0; transform: scale(1); }
+            4% { opacity: 1; }
+            33.33% { opacity: 1; }
+            37.33% { opacity: 0; transform: scale(1.1); }
+            100% { opacity: 0; }
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(26,15,20,0.85), rgba(160,29,40,0.4));
+            z-index: -1;
+            backdrop-filter: blur(3px);
+        }
+
+        /* --- NAVIGATION --- */
         nav {
-            background: white;
-            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            padding: 1.5rem 5%;
+            position: absolute;
+            width: 100%;
+            z-index: 10;
+            animation: slideDown 1s ease-out;
         }
 
         .logo {
             font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--primary);
+            font-weight: 700;
+            color: var(--accent-color);
+            letter-spacing: 1px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .nav-links button {
+        .nav-btn {
+            padding: 0.7rem 1.5rem;
+            border: 2px solid var(--accent-color);
             background: transparent;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
+            color: var(--accent-color);
+            border-radius: 30px;
             cursor: pointer;
-            margin-left: 10px;
-            transition: 0.3s;
+            font-weight: 600;
+            transition: 0.4s;
+            position: relative;
+            overflow: hidden;
         }
 
-        .nav-links button.primary-btn {
-            background: var(--primary);
-            color: white;
+        .nav-btn.fill {
+            background: var(--accent-color);
+            color: var(--dark-bg);
         }
 
-        /* Hero Section */
-        .hero {
-            height: 85vh;
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1548100146-2f08d087569b?q=80&w=2070'); /* Placeholder generic romantic bg */
-            background-size: cover;
-            background-position: center;
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px -10px var(--accent-color);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero-container {
+            min-height: 100vh;
             display: flex;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-            padding: 20px;
+            justify-content: space-between;
+            padding: 0 10%;
+            padding-top: 80px; /* space for nav */
         }
 
-        .hero-content {
+        .hero-text {
+            flex: 1;
             max-width: 600px;
+            animation: fadeUp 1.2s ease-out;
+            z-index: 2;
         }
 
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        h1.main-title {
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #fff, var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .hero p {
-            font-size: 1.5rem;
+        .hero-tagline {
+            font-size: 1.4rem;
+            margin-bottom: 2.5rem;
             font-style: italic;
-            margin-bottom: 30px;
+            opacity: 0.9;
         }
 
-        .cta-btn {
+        .main-cta-btn {
             padding: 1rem 3rem;
             font-size: 1.2rem;
-            background: var(--primary);
+            background: linear-gradient(45deg, var(--primary-color), #c0392b);
             color: white;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(138, 28, 28, 0.4);
-            transition: transform 0.2s;
-        }
-
-        .cta-btn:hover {
-            transform: scale(1.05);
-        }
-
-        /* App Interface Mockup */
-        .app-container {
-            max-width: 400px;
-            margin: -50px auto 50px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(160, 29, 40, 0.5);
+            transition: 0.4s;
             position: relative;
-            z-index: 10;
-            display: none; /* Hidden by default */
         }
 
-        .form-group {
-            margin-bottom: 15px;
-            text-align: left;
+        .main-cta-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(160, 29, 40, 0.7);
         }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+        
+        .uni-badge {
+            margin-top: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--glass-bg);
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
             font-size: 0.9rem;
         }
 
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+        /* --- FLOATING PHONE MOCKUPS --- */
+        .hero-visuals {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            height: 600px;
+            animation: fadeUp 1.5s ease-out;
         }
 
-        .photo-upload {
-            border: 2px dashed var(--primary);
+        /* The container for the two phones */
+        .phone-group {
+            position: relative;
+            width: 400px;
+            height: 600px;
+            /* Subtle floating animation for the whole group */
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .phone-mockup {
+            position: absolute;
+            width: 260px;
+            height: 520px;
+            background: #000;
+            border-radius: 40px;
+            border: 8px solid #333;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8);
+            transition: 0.5s;
+        }
+
+        /* Simulated App Screen Content */
+        .screen-content {
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .screen-overlay {
+             position: absolute; bottom:0; left:0; width:100%;
+             background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+             padding: 20px;
+        }
+
+        /* Positioning the two phones */
+        .phone-1 {
+            top: 0;
+            left: 0;
+            transform: rotate(-5deg);
+            z-index: 2;
+        }
+        
+        .phone-1:hover { transform: rotate(0deg) scale(1.05); z-index: 10;}
+
+        .phone-2 {
+            top: 80px;
+            left: 140px;
+            transform: rotate(5deg);
+            z-index: 1;
+        }
+         .phone-2:hover { transform: rotate(0deg) scale(1.05); z-index: 10;}
+
+
+        /* --- GLASSMORPHISM FORM SECTION (Hidden Initially) --- */
+        .form-section-container {
+            display: none; /* Hidden by default */
+            min-height: 90vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 20px;
+            position: relative;
+            z-index: 20;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            padding: 3rem;
+            border-radius: 30px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: slideUpIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+        
+        .close-btn {
+            position: absolute; top: 20px; right: 20px;
+            font-size: 1.5rem; color: var(--text-light); cursor: pointer;
+            transition: 0.3s;
+        }
+        .close-btn:hover { color: var(--accent-color); transform: rotate(90deg);}
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--accent-color);
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-color);
+        }
+
+        .glass-input {
+            width: 100%;
+            padding: 12px 15px 12px 45px; /* space for icon */
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            transition: 0.3s;
+            outline: none;
+        }
+        
+        textarea.glass-input { padding-left: 15px; }
+
+        .glass-input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+        }
+        
+        .photo-upload-box {
+            border: 2px dashed var(--glass-border);
+            background: rgba(255,255,255,0.02);
             padding: 20px;
             text-align: center;
-            border-radius: 10px;
+            border-radius: 15px;
             cursor: pointer;
             margin-bottom: 20px;
-            color: #666;
+            transition: 0.3s;
+        }
+        
+        .photo-upload-box:hover {
+            border-color: var(--accent-color);
+            background: rgba(212, 175, 55, 0.05);
         }
 
-        .privacy-badge {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            font-size: 0.8rem;
-            color: #27ae60;
-            margin-top: 15px;
+        /* --- KEYFRAME ANIMATIONS --- */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-25px); }
         }
 
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 2rem;
-            background: #2c2c2c;
-            color: #888;
-            font-size: 0.9rem;
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
+        @keyframes fadeUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes slideUpIn {
+            from { transform: translateY(100px) scale(0.9); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+
+        /* --- RESPONSIVE DESIGN --- */
+        @media (max-width: 968px) {
+            .hero-container {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 120px;
+            }
+            
+            h1.main-title { font-size: 3rem; }
+
+            .hero-visuals {
+                margin-top: 50px;
+                height: 400px;
+                transform: scale(0.8); /* Shrink phones slightly on tablets */
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1.main-title { font-size: 2.5rem; }
+            .nav-btn { display: none; } /* Hide Login button on small mobile */
+            .nav-btn.fill { display: block; padding: 0.5rem 1rem; font-size: 0.9rem;}
+            
+            /* Hide complex phones on small mobile, too messy */
+            .hero-visuals { display: none; }
+            
+            .glass-card { padding: 2rem; }
+        }
     </style>
 </head>
 <body>
 
+    <div class="bg-slider">
+        <div class="bg-slide s1"></div>
+        <div class="bg-slide s2"></div>
+        <div class="bg-slide s3"></div>
+    </div>
+    <div class="overlay"></div>
+
     <nav>
         <div class="logo">
-            <i class="fas fa-heart"></i> Tisza Amour
+            <i class="fas fa-kiss-wink-heart"></i> Tisza Amour
         </div>
-        <div class="nav-links">
-            <button onclick="showLogin()">Log In</button>
-            <button class="primary-btn" onclick="showRegister()">Join SZTE</button>
+        <div style="display: flex; gap: 15px;">
+            <button class="nav-btn" onclick="toggleView('form')">Log In</button>
+            <button class="nav-btn fill" onclick="toggleView('form')">Join SZTE</button>
         </div>
     </nav>
 
-    <header class="hero" id="heroSection">
-        <div class="hero-content">
-            <h1>Tisza Amour</h1>
-            <p>"Find your heart where the river flows."</p>
-            <button class="cta-btn" onclick="showRegister()">Find Love in Szeged</button>
-            <div style="margin-top: 20px; font-size: 0.9rem; opacity: 0.9;">
-                <i class="fas fa-university"></i> Exclusively for University of Szeged Students
+    <section class="hero-container" id="heroSection">
+        <div class="hero-text">
+            <h1 class="main-title">Love in the <br>City of Sunshine.</h1>
+            <p class="hero-tagline">"Find your heart where the Tisza flows. The premier dating community for University of Szeged students."</p>
+            <button class="main-cta-btn" onclick="toggleView('form')">
+                Start Matching <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>
+            </button>
+            
+            <div class="uni-badge">
+                <i class="fas fa-user-graduate" style="color: var(--accent-color);"></i>
+                Verified SZTE Students Only
             </div>
         </div>
-    </header>
 
-    <div class="app-container" id="appInterface">
-        <h2 style="text-align: center; color: var(--primary); margin-bottom: 20px;">Create Profile</h2>
-        
-        <form onsubmit="handleForm(event)">
-            <div class="photo-upload" onclick="document.getElementById('fileInput').click()">
-                <i class="fas fa-camera fa-2x"></i>
-                <p>Click to Upload Student Photo</p>
-                <input type="file" id="fileInput" hidden accept="image/*">
-            </div>
-
-            <div class="form-group">
-                <label>University ID / Email</label>
-                <input type="email" placeholder="name@stud.u-szeged.hu" required>
-            </div>
-
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" placeholder="••••••••" required>
-            </div>
-
-            <div class="form-group">
-                <label>Bio (Your Classic Intro)</label>
-                <textarea rows="3" placeholder="Studying Medicine, love walks by the Dóm..."></textarea>
-            </div>
-
-            <button class="cta-btn" style="width: 100%;">Start Matching</button>
-
-            <div class="privacy-badge">
-                <i class="fas fa-lock"></i> SSL Encrypted & Privacy Assured
-            </div>
-            <p style="text-align: center; font-size: 0.8rem; color: #888; margin-top: 10px;">
-                We respect your data. No information is sold to third parties.
-            </p>
-        </form>
-    </div>
-
-    <section style="padding: 4rem 2rem; text-align: center; max-width: 1000px; margin: 0 auto;">
-        <h2 style="color: var(--primary); margin-bottom: 2rem;">Why Tisza Amour?</h2>
-        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem;">
-            <div style="flex: 1; min-width: 250px;">
-                <i class="fas fa-user-graduate fa-3x" style="color: var(--accent); margin-bottom: 1rem;"></i>
-                <h3>Verified Students</h3>
-                <p>Connect with real people from your campus.</p>
-            </div>
-            <div style="flex: 1; min-width: 250px;">
-                <i class="fas fa-shield-alt fa-3x" style="color: var(--accent); margin-bottom: 1rem;"></i>
-                <h3>Privacy First</h3>
-                <p>Your data stays safe. We prioritize your security.</p>
-            </div>
-            <div style="flex: 1; min-width: 250px;">
-                <i class="fas fa-glass-cheers fa-3x" style="color: var(--accent); margin-bottom: 1rem;"></i>
-                <h3>Classic Romance</h3>
-                <p>Skip the hookup culture. Find a genuine connection.</p>
+        <div class="hero-visuals">
+            <div class="phone-group">
+                <div class="phone-mockup phone-1">
+                    <div class="screen-content" style="background-image: url('https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=1887');">
+                        <div class="screen-overlay">
+                            <h3>Anna, 22</h3>
+                            <p>Medicine Faculty. Coffee addict ☕</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="phone-mockup phone-2">
+                    <div class="screen-content" style="background-image: url('https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1887');">
+                        <div class="screen-overlay">
+                            <h3>David, 24</h3>
+                            <p>Law Student. Loves rowing on the Tisza.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <footer>
-        <p>&copy; 2023 Tisza Amour. Made with <i class="fas fa-heart" style="color: red;"></i> in Szeged.</p>
-    </footer>
+    <section class="form-section-container" id="formSection" style="display: none;">
+        <div class="glass-card">
+             <i class="fas fa-times close-btn" onclick="toggleView('hero')"></i>
+            <div class="form-header">
+                <h2>Create Profile</h2>
+                <p>Join the exclusive SZTE community.</p>
+            </div>
+
+            <form onsubmit="handleForm(event)">
+                <div class="photo-upload-box" onclick="document.getElementById('fileInput').click()">
+                    <i class="fas fa-cloud-upload-alt fa-3x" style="color: var(--accent-color); margin-bottom: 10px;"></i>
+                    <p>Tap to upload your best photo</p>
+                    <input type="file" id="fileInput" hidden accept="image/*">
+                </div>
+
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" class="glass-input" placeholder="SZTE Email (name@stud.u-szeged.hu)" required>
+                </div>
+
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" class="glass-input" placeholder="Password" required>
+                </div>
+                
+                <div class="input-group">
+                     <textarea class="glass-input" rows="3" placeholder="Your romantic bio... What do you study?"></textarea>
+                </div>
+
+                <button class="main-cta-btn" style="width: 100%; border-radius: 15px;">
+                    Create Account
+                </button>
+
+                <p style="text-align: center; font-size: 0.8rem; opacity: 0.7; margin-top: 20px;">
+                    <i class="fas fa-shield-alt"></i> Your privacy is our priority. No data is shared.
+                </p>
+            </form>
+        </div>
+    </section>
 
     <script>
-        function showRegister() {
-            document.getElementById('heroSection').style.display = 'none';
-            document.getElementById('appInterface').style.display = 'block';
-            window.scrollTo(0,0);
-        }
+        // Simple function to switch between the Hero view and the Form view
+        function toggleView(view) {
+            const hero = document.getElementById('heroSection');
+            const form = document.getElementById('formSection');
 
-        function showLogin() {
-            alert("Welcome back! This is a demo version.");
-            showRegister();
+            if (view === 'form') {
+                hero.style.display = 'none';
+                form.style.display = 'flex';
+            } else {
+                form.style.display = 'none';
+                hero.style.display = 'flex';
+            }
+            window.scrollTo(0,0);
         }
 
         function handleForm(event) {
             event.preventDefault();
-            // This is where real backend code would go.
-            // For now, we simulate a successful login.
-            const email = document.querySelector('input[type="email"]').value;
-            alert(`Profile created for ${email}! \n\nNote: Since this is a static demo, your data is not actually saved to a server yet.`);
+            alert("Welcome to Tisza Amour! \n\n(This is a frontend demo. In a real app, your profile would be securely saved now.)");
+            toggleView('hero');
         }
     </script>
 </body>
