@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tisza Amour - University Dating</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #8a1c1c; /* Szeged Paprika/Red Wine */
+            --secondary: #fdf6e3; /* Cream/Old Paper */
+            --accent: #d4af37; /* Gold */
+            --text: #2c2c2c;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--secondary);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Navigation */
+        nav {
+            background: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links button {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: 0.3s;
+        }
+
+        .nav-links button.primary-btn {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 85vh;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1548100146-2f08d087569b?q=80&w=2070'); /* Placeholder generic romantic bg */
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 20px;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+
+        .cta-btn {
+            padding: 1rem 3rem;
+            font-size: 1.2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(138, 28, 28, 0.4);
+            transition: transform 0.2s;
+        }
+
+        .cta-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* App Interface Mockup */
+        .app-container {
+            max-width: 400px;
+            margin: -50px auto 50px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 2rem;
+            position: relative;
+            z-index: 10;
+            display: none; /* Hidden by default */
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .photo-upload {
+            border: 2px dashed var(--primary);
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        .privacy-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            font-size: 0.8rem;
+            color: #27ae60;
+            margin-top: 15px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: #2c2c2c;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">
+            <i class="fas fa-heart"></i> Tisza Amour
+        </div>
+        <div class="nav-links">
+            <button onclick="showLogin()">Log In</button>
+            <button class="primary-btn" onclick="showRegister()">Join SZTE</button>
+        </div>
+    </nav>
+
+    <header class="hero" id="heroSection">
+        <div class="hero-content">
+            <h1>Tisza Amour</h1>
+            <p>"Find your heart where the river flows."</p>
+            <button class="cta-btn" onclick="showRegister()">Find Love in Szeged</button>
+            <div style="margin-top: 20px; font-size: 0.9rem; opacity: 0.9;">
+                <i class="fas fa-university"></i> Exclusively for University of Szeged Students
+            </div>
+        </div>
+    </header>
+
+    <div class="app-container" id="appInterface">
+        <h2 style="text-align: center; color: var(--primary); margin-bottom: 20px;">Create Profile</h2>
+        
+        <form onsubmit="handleForm(event)">
+            <div class="photo-upload" onclick="document.getElementById('fileInput').click()">
+                <i class="fas fa-camera fa-2x"></i>
+                <p>Click to Upload Student Photo</p>
+                <input type="file" id="fileInput" hidden accept="image/*">
+            </div>
+
+            <div class="form-group">
+                <label>University ID / Email</label>
+                <input type="email" placeholder="name@stud.u-szeged.hu" required>
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" placeholder="••••••••" required>
+            </div>
+
+            <div class="form-group">
+                <label>Bio (Your Classic Intro)</label>
+                <textarea rows="3" placeholder="Studying Medicine, love walks by the Dóm..."></textarea>
+            </div>
+
+            <button class="cta-btn" style="width: 100%;">Start Matching</button>
+
+            <div class="privacy-badge">
+                <i class="fas fa-lock"></i> SSL Encrypted & Privacy Assured
+            </div>
+            <p style="text-align: center; font-size: 0.8rem; color: #888; margin-top: 10px;">
+                We respect your data. No information is sold to third parties.
+            </p>
+        </form>
+    </div>
+
+    <section style="padding: 4rem 2rem; text-align: center; max-width: 1000px; margin: 0 auto;">
+        <h2 style="color: var(--primary); margin-bottom: 2rem;">Why Tisza Amour?</h2>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem;">
+            <div style="flex: 1; min-width: 250px;">
+                <i class="fas fa-user-graduate fa-3x" style="color: var(--accent); margin-bottom: 1rem;"></i>
+                <h3>Verified Students</h3>
+                <p>Connect with real people from your campus.</p>
+            </div>
+            <div style="flex: 1; min-width: 250px;">
+                <i class="fas fa-shield-alt fa-3x" style="color: var(--accent); margin-bottom: 1rem;"></i>
+                <h3>Privacy First</h3>
+                <p>Your data stays safe. We prioritize your security.</p>
+            </div>
+            <div style="flex: 1; min-width: 250px;">
+                <i class="fas fa-glass-cheers fa-3x" style="color: var(--accent); margin-bottom: 1rem;"></i>
+                <h3>Classic Romance</h3>
+                <p>Skip the hookup culture. Find a genuine connection.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2023 Tisza Amour. Made with <i class="fas fa-heart" style="color: red;"></i> in Szeged.</p>
+    </footer>
+
+    <script>
+        function showRegister() {
+            document.getElementById('heroSection').style.display = 'none';
+            document.getElementById('appInterface').style.display = 'block';
+            window.scrollTo(0,0);
+        }
+
+        function showLogin() {
+            alert("Welcome back! This is a demo version.");
+            showRegister();
+        }
+
+        function handleForm(event) {
+            event.preventDefault();
+            // This is where real backend code would go.
+            // For now, we simulate a successful login.
+            const email = document.querySelector('input[type="email"]').value;
+            alert(`Profile created for ${email}! \n\nNote: Since this is a static demo, your data is not actually saved to a server yet.`);
+        }
+    </script>
+</body>
+</html>
